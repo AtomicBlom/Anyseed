@@ -52,6 +52,7 @@ steps:
     sourceFolder: './build/libs/'
     contents: 'anyseed-*-universal.jar'
     targetFolder: $(build.artifactStagingDirectory)/release
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
 
 - task: Gradle@2
   inputs:
@@ -63,6 +64,7 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
     tasks: 'clean'
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
 
 - task: Gradle@2
   inputs:
@@ -76,13 +78,15 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
 
 - task: CopyFiles@2
   inputs:
     sourceFolder: './build/libs/'
     contents: 'anyseed-*-beta-universal.jar'
     targetFolder: $(build.artifactStagingDirectory)/beta
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifacts to VSTS'
-#  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
