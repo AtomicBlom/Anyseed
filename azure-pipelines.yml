@@ -37,7 +37,7 @@ steps:
 - task: Gradle@2
   inputs:
     workingDirectory: ''
-    options: '-PCIRevision $(javaprops_mod_version).$(revision) -PCIType RELEASE'
+    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
@@ -56,7 +56,7 @@ steps:
 - task: Gradle@2
   inputs:
     workingDirectory: ''
-    options: '-PCIRevision $(javaprops_mod_version).$(revision)-beta -PCIType BETA'
+    options: '-PCIRevision=$(javaprops_mod_version).$(revision)-beta -PCIType=BETA'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
