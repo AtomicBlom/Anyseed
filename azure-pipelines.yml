@@ -72,3 +72,6 @@ steps:
     contents: '*.jar'
     targetFolder: $(build.artifactStagingDirectory)/test
 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifacts to VSTS'
+#  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
