@@ -8,7 +8,7 @@ pool:
 
 steps:
 - powershell: |
-    (Get-Content .\gradle.properties).Split([Environment]::NewLine) | % {
+    (Get-Content ./gradle.properties).Split([Environment]::NewLine) | % {
         $kvp = $_.Split('=')
         if ($kvp.Count -gt 1) {
             $key = $kvp[0] -replace "\.", "_";
@@ -16,6 +16,20 @@ steps:
             Write-Host "##vso[task.setvariable variable=javaprops_$key]$value"
         }
     }
+
+- powershell: |
+    $var = (gci env:*).GetEnumerator() | Sort-Object Name
+    $out = ""
+    Foreach ($v in $var) {$out = $out + "`t{0,-28} = {1,-28}`n" -f $v.Name, $v.Value}
+
+    $fileName = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/variables.md"
+    write-output "dump variables on $fileName"
+
+    set-content $fileName $out
+
+    write-output "##vso[task.addattachment type=Distributedtask.Core.Summary;name=Environment Variables;]$fileName"
+  displayName: Dump Variables
+  condition: eq(variables['system.debug'], 'true')
 
 - task: Gradle@2
   inputs:
