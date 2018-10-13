@@ -22,10 +22,30 @@ public class AnyseedMod
 	public static AnyseedMod INSTANCE;
 	static Logger logger;
 
+	public static final String CI_BUILD = "@CI_BUILD@";
+	public static ReleaseType getReleaseType() {
+		try {
+			return Enum.valueOf(ReleaseType.class, CI_BUILD.toUpperCase());
+		} catch (Exception e)
+		{
+			return ReleaseType.PRIVATE;
+		}
+	}
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		logger = event.getModLog();
+
+		switch (getReleaseType()) {
+			case BETA:
+				Log.REGISTRATION.info("You are running a pre-release build of Anyseed. This message is purely for informational purposes.");
+				break;
+			case PRIVATE:
+				Log.REGISTRATION.warning("You are running a private build of Anyseed. This message is purely for informational purposes.");
+				break;
+		}
+
 		ModConfig.parse();
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -37,5 +57,11 @@ public class AnyseedMod
 
 			ModConfig.parse();
 		}
+	}
+
+	public enum ReleaseType {
+		RELEASE,
+		BETA,
+		PRIVATE
 	}
 }

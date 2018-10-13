@@ -37,7 +37,7 @@ steps:
 - task: Gradle@2
   inputs:
     workingDirectory: ''
-    options: '-PCIRevision $(javaprops_mod_version).$(revision)'
+    options: '-PCIRevision $(javaprops_mod_version).$(revision) -PCIType RELEASE'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
@@ -52,3 +52,23 @@ steps:
     sourceFolder: './build/libs/'
     contents: 'anyseed-*-universal.jar'
     targetFolder: $(build.artifactStagingDirectory)/release
+
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    options: '-PCIRevision $(javaprops_mod_version).$(revision)-beta -PCIType BETA'
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'build'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: './build/libs/'
+    contents: '*.jar'
+    targetFolder: $(build.artifactStagingDirectory)/test
+
