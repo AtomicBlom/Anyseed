@@ -1,0 +1,30 @@
+# Gradle
+# Build your Java project and run tests with Gradle using a Gradle wrapper script.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+steps:
+- powershell: |
+    (Get-Content .\gradle.properties).Split([Environment]::NewLine) | % {
+        $kvp = $_.Split('=')
+        if ($kvp.Count -gt 1) {
+            $key = $kvp[0] -replace "\.", "_";
+            $value = $kvp[1];
+            Write-Host "##vso[task.setvariable variable=javaprops_$key]$value"
+        }
+    }
+
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'build'
