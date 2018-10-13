@@ -56,6 +56,17 @@ steps:
 - task: Gradle@2
   inputs:
     workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    tasks: 'clean'
+
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
     options: '-PCIRevision=$(javaprops_mod_version).$(revision)-beta -PCIType=BETA'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
@@ -69,8 +80,8 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: './build/libs/'
-    contents: '*.jar'
-    targetFolder: $(build.artifactStagingDirectory)/test
+    contents: 'anyseed-*-beta-universal.jar'
+    targetFolder: $(build.artifactStagingDirectory)/beta
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifacts to VSTS'
