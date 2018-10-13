@@ -1,0 +1,19 @@
+[
+  {
+    "modid": "anyseed",
+    "name": "Anyseed",
+    "description": "A seed back that picks from 5 different seeds",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "http://github.com/AtomicBlom/Anyseed",
+    "updateUrl": "",
+    "authorList": [
+      "AtomicBlom",
+      "Rorax"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
