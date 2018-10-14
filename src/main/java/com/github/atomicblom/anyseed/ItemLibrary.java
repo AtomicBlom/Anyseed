@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 public final class ItemLibrary
 {
 	@Nonnull
-	public static final RandoSeedItem seed_packet;
+	public static final SeedPacketItem seed_packet;
 
 	static {
 		seed_packet = null;

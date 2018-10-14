@@ -20,7 +20,7 @@ public final class ObjectRegistryHandler
 	public static void addItems(Register<Item> event)
 	{
 		event.getRegistry().register(
-	            new RandoSeedItem()
+	            new SeedPacketItem()
 			            .setRegistryName(Reference.Items.SEED_PACKET)
 			            .setTranslationKey(Reference.Items.SEED_PACKET.getPath())
 	                    .setCreativeTab(CreativeTabs.FOOD)

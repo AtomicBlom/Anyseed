@@ -1,8 +1,16 @@
 package com.github.atomicblom.anyseed;
 
+import net.minecraft.init.Items;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootEntryItem;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -48,6 +56,36 @@ public class AnyseedMod
 
 		ModConfig.parse();
 		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@SubscribeEvent
+	public void onLootTablesLoaded(LootTableLoadEvent event) {
+
+		if (!ModConfig.addLoot) return;
+
+		ResourceLocation name = event.getName();
+		if (name.equals(LootTableList.CHESTS_SIMPLE_DUNGEON)) {
+
+			final LootPool simpleDungeonPool1 = event.getTable().getPool("pool1");
+			if (simpleDungeonPool1 != null) {
+				simpleDungeonPool1.addEntry(new LootEntryItem(ItemLibrary.seed_packet, 20, 0, new LootFunction[0], new LootCondition[0], "loottable:cookie"));
+			}
+		} else if (name.equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)) {
+			final LootPool mineshaftPool1 = event.getTable().getPool("pool1");
+			if (mineshaftPool1 != null) {
+				mineshaftPool1.addEntry(new LootEntryItem(ItemLibrary.seed_packet, 20, 0, new LootFunction[0], new LootCondition[0], "loottable:cookie"));
+			}
+		} else if (name.equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
+			final LootPool desertPyramidMain = event.getTable().getPool("main");
+			if (desertPyramidMain != null) {
+				desertPyramidMain.addEntry(new LootEntryItem(ItemLibrary.seed_packet, 20, 0, new LootFunction[0], new LootCondition[0], "loottable:cookie"));
+			}
+		} else if (name.equals(LootTableList.CHESTS_SPAWN_BONUS_CHEST)) {
+			final LootPool spawnChestPool2 = event.getTable().getPool("pool2");
+			if (spawnChestPool2 != null) {
+				spawnChestPool2.addEntry(new LootEntryItem(ItemLibrary.seed_packet, 20, 0, new LootFunction[0], new LootCondition[0], "loottable:cookie"));
+			}
+		}
 	}
 
 	@SubscribeEvent
